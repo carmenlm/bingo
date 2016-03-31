@@ -1,3 +1,14 @@
-#imagenBola{
-    background-image: url("/img/");
+#imagenBola {
+    background-image: url("../img/bolaSprite.jpg");
+    width: 150px;
+    height: 150px;
+    position: relative;
+}
+
+#numero {
+    font-size: 30px;
+    position: relative;
+    top: 65px;
+    left: 70px;
+    
 }
