@@ -1,15 +1,11 @@
-/**
- * Created by carmen on 30/03/16.
- */
+/** Created by carmen on 30/03/16. */
 
 /**
  * init
  */
 function init() {
-
-
     newCard();
-
+    asignarNumeroAleatorio();
 
 }
 
@@ -24,11 +20,8 @@ function newCard() {
     //variable id contador para la celda
     var id = 0;
 
-
     //bucle para crear las 5 columnas
     for (var i = 0; i < 5; i++) {
-
-
 
         //div1 para cada fila (bootstrap)
         var divFila1 = document.createElement('div');
@@ -38,21 +31,13 @@ function newCard() {
         //bucle para crear las 5 filas
         for (var j = 0; j < 5; j++) {
 
-            //TODO asignar el valor
-            //celda =
-
             //div2 para cada fila (bootstrap)
             var divFila2 = document.createElement('div');
             divFila2.setAttribute('class', 'btn-group');
             divFila2.setAttribute('role', 'group');
 
-
             //cada celda es un boton para luego ir desactivandolos
             var botonCelda = document.createElement('button');
-
-            //TODO poner numeros aleatorios en cada columna cada intervalo
-            //var textoNodo = document.createTextNode(celda);
-            //botonCelda.appendChild(textoNodo);
             botonCelda.setAttribute('class', 'btn btn-primary');
             botonCelda.setAttribute('role', 'group');
             botonCelda.setAttribute('id', 'celda' + id);
@@ -75,55 +60,56 @@ function newCard() {
 
 
     }
-    asignarNumeroAleatorio();
 
 
 }
 /**
  *
- * @param columna (letra B / I / N / G / O) -- depende de la columna tiene un rango
  * funcion para asignar un valor a la celda -- numero aleatorio
  */
 function asignarNumeroAleatorio() {
     //inicio de la variable numero aleatorio
     var numero = 0;
 
-    var arrayCeldas = [];
-
+    //bucle por cada columna
     for (var i = 0; i < 5; i++) {
         var contador = i;
+        //bucle por cada fila
         for (var j = 0; j < 5; j++) {
             //variable celda
             var celda = "celda" + contador;
 
-            console.log(contador);
+            //paso por el switch la columna donde se tiene que poner cada rango de numero
 
-            console.log("i " + i + " / j " + j);
-
-
+            /*
+             En cada caso:
+             1/ saco un numero aleatorio
+             2/ lo pongo en el html de la celda
+             3/ aumento el contador a 5, itera por columnas
+             */
             switch (i) {
                 case 0:
-                    numero = Math.floor(Math.random() * 15) + 1;
+                    numero = devolverRandom() + 1;
                     document.getElementById(celda).innerHTML = numero;
                     contador = contador + 5;
                     break;
                 case 1:
-                    numero = Math.floor(Math.random() * 15) + 16;
+                    numero = devolverRandom() + 16;
                     document.getElementById(celda).innerHTML = numero;
                     contador = contador + 5;
                     break;
                 case 2:
-                    numero = Math.floor((Math.random() * 15) + 31);
+                    numero = devolverRandom() + 31;
                     document.getElementById(celda).innerHTML = numero;
                     contador = contador + 5;
                     break;
                 case 3:
-                    numero = Math.floor((Math.random() * 15) + 46);
+                    numero = devolverRandom() + 46;
                     document.getElementById(celda).innerHTML = numero;
                     contador = contador + 5;
                     break;
                 case 4:
-                    numero = Math.floor((Math.random() * 15) + 61);
+                    numero = devolverRandom() + 61;
                     document.getElementById(celda).innerHTML = numero;
                     contador = contador + 5;
                     break;
@@ -134,6 +120,14 @@ function asignarNumeroAleatorio() {
 
     }
 
+}
+
+/**
+ * funcion para devolver un random con un rango de 15 numeros
+ * @returns {number}
+ */
+function devolverRandom() {
+    return Math.floor(Math.random() * 15);
 
 }
 
