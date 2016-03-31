@@ -6,6 +6,33 @@
 function init() {
     nuevoCarton();
     pintarNumeros();
+    manejadorBotones();
+
+
+}
+/**
+ * funcion para añadir eventlistener a cada boton de las celdas
+ */
+function manejadorBotones() {
+    //capturo todos los botones
+    var botones = document.getElementsByClassName('botonesBingo');
+
+    //bucle para recorrer todos los botones
+    for (var i = 0; i < botones.length; i++) {
+
+        //TODO que se vaya añadiendo la posicion seleccionada a un array, para luego comparar con los arrays de los cartones ganadores ¿?
+        //le pongo el event listener, click -- desactivo boton
+        botones[i].addEventListener('click', function () {
+            //selecciono el id de la celda pulsada
+            var id = this.id;
+            //capturo la celda con la id pulsada
+            var celda = document.getElementById(id);
+            //desactivo el boton pulsada
+            celda.setAttribute('disabled', 'disabled');
+        });
+
+    }
+
 
 }
 
@@ -38,7 +65,7 @@ function nuevoCarton() {
 
             //cada celda es un boton para luego ir desactivandolos
             var botonCelda = document.createElement('button');
-            botonCelda.setAttribute('class', 'btn btn-primary');
+            botonCelda.setAttribute('class', 'btn btn-primary botonesBingo');
             botonCelda.setAttribute('role', 'group');
             botonCelda.setAttribute('id', 'celda' + id);
 
