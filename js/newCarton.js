@@ -4,8 +4,8 @@
  * init
  */
 function init() {
-    newCard();
-    asignarNumeroAleatorio();
+    nuevoCarton();
+    pintarNumeros();
 
 }
 
@@ -13,7 +13,7 @@ function init() {
 /**
  * Funcion para crear el carton
  */
-function newCard() {
+function nuevoCarton() {
     //variable para poner el numero de la celda
     var celda = 0;
 
@@ -64,53 +64,69 @@ function newCard() {
 
 }
 /**
- *
- * funcion para asignar un valor a la celda -- numero aleatorio
+ * funcion para crear array con los numeros de cada carton
+ * @returns {Array} -- con los numero en la pos corresp.
  */
-function asignarNumeroAleatorio() {
+function crearArrayNumerosAleatorios() {
     //inicio de la variable numero aleatorio
     var numero = 0;
+
+    //array para almacenar un numero en la posicion del carton
+    var arrayNumeros = new Array(24);
+    console.log(arrayNumeros);
 
     //bucle por cada columna
     for (var i = 0; i < 5; i++) {
         var contador = i;
         //bucle por cada fila
         for (var j = 0; j < 5; j++) {
-            //variable celda
-            var celda = "celda" + contador;
-
-            //paso por el switch la columna donde se tiene que poner cada rango de numero
 
             /*
-             En cada caso:
-             1/ saco un numero aleatorio
-             2/ lo pongo en el html de la celda
-             3/ aumento el contador a 5, itera por columnas
+             * En cada caso (valor de la columna i):
+             * 1/ saco un numero aleatorio
+             * 2/ lo añado a un array en la posicion de carton que le corresponda, sin duplicados
+             * 3/ aumento el contador a 5, itera por columnas
              */
             switch (i) {
                 case 0:
-                    numero = devolverRandom() + 1;
-                    document.getElementById(celda).innerHTML = numero;
+                    do {
+                        numero = devolverRandom() + 1;
+                    } while (comprobarNumeroDuplicado(numero, arrayNumeros));
+                    arrayNumeros[contador] = numero;
+                    //arrayNumeros.splice(contador, 0, numero);
                     contador = contador + 5;
                     break;
                 case 1:
-                    numero = devolverRandom() + 16;
-                    document.getElementById(celda).innerHTML = numero;
+                    do {
+                        numero = devolverRandom() + 16;
+                    } while (comprobarNumeroDuplicado(numero, arrayNumeros));
+                    arrayNumeros[contador] = numero;
+                    //arrayNumeros.splice(contador, 0, numero);
                     contador = contador + 5;
                     break;
                 case 2:
-                    numero = devolverRandom() + 31;
-                    document.getElementById(celda).innerHTML = numero;
+
+                    do {
+                        numero = devolverRandom() + 31;
+                    } while (comprobarNumeroDuplicado(numero, arrayNumeros));
+                    arrayNumeros[contador] = numero;
+                    //arrayNumeros.splice(contador, 0, numero);
                     contador = contador + 5;
                     break;
                 case 3:
-                    numero = devolverRandom() + 46;
-                    document.getElementById(celda).innerHTML = numero;
+                    do {
+                        numero = devolverRandom() + 46;
+                    } while (comprobarNumeroDuplicado(numero, arrayNumeros));
+                    arrayNumeros[contador] = numero;
+                    //arrayNumeros.splice(contador, 0, numero);
                     contador = contador + 5;
                     break;
                 case 4:
-                    numero = devolverRandom() + 61;
-                    document.getElementById(celda).innerHTML = numero;
+                    do {
+                        numero = devolverRandom() + 61;
+                    } while (comprobarNumeroDuplicado(numero, arrayNumeros));
+                    arrayNumeros[contador] = numero;
+                    //arrayNumeros.splice(contador, 0, numero);
                     contador = contador + 5;
                     break;
             }
@@ -120,6 +136,13 @@ function asignarNumeroAleatorio() {
 
     }
 
+
+    //la posicion 12 (centro) se queda vacia
+    //TODO poner desactivado la pos 12 por defecto
+    arrayNumeros[12] = "LIBRE";
+
+    return arrayNumeros;
+
 }
 
 /**
@@ -128,6 +151,33 @@ function asignarNumeroAleatorio() {
  */
 function devolverRandom() {
     return Math.floor(Math.random() * 15);
+
+}
+/**
+ * funcion para pintar en cada celda el numero correspondiente del array
+ */
+function pintarNumeros() {
+    //variable con el array de numeros
+    var numeros = crearArrayNumerosAleatorios();
+    //recorro las 24 posicion del carton
+    for (var i = 0; i < 25; i++) {
+
+        //valor del id de cada celda
+        var id = "celda" + i;
+
+        //incrusto en el html el valor en el button
+        document.getElementById(id).innerHTML = numeros[i];
+
+    }
+}
+
+function comprobarNumeroDuplicado(valor, array) {
+    if (array.indexOf(valor) == -1) {
+        return false;
+    }
+    else {
+        return true;
+    }
 
 }
 
