@@ -36,6 +36,21 @@ function manejadorBotones() {
 
 }
 
+function sacarBola() {
+
+    //capturo el boton de sacar bola
+    var boton = document.getElementById('btnLanzar');
+
+    //evento click
+    boton.addEventListener('click', function () {
+
+        //saco un numero aleatorio 1-75
+        //TODO hacer como el usednums
+
+    });
+
+}
+
 
 /**
  * Funcion para crear el carton
