@@ -13,6 +13,15 @@ function init() {
     marcarNumeros();
     sacarBola();
 
+
+    document.getElementById('nuevaPartida').addEventListener('click', function () {
+        location.reload();
+    });
+}
+
+function recargarPartida() {
+
+
 }
 /**
  * funcion para ir marcando los numeros ganadores que tengo en mi carton
@@ -55,6 +64,8 @@ function marcarNumeros() {
             //cambio a 1 la posicion de la celda en el array para comprobar cuando gana
             marcados[pos] = 1;
 
+            console.log(marcados);
+
 
             //compruebo si el array es ganador
             comprobarCarton(marcados);
@@ -74,15 +85,21 @@ function marcarNumeros() {
 function comprobarCarton(array) {
 
     //carton ganador 1
-    var ganador1 = [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    var ganador2 = [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var ganador1 = [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var ganador2 = [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     var ganador3 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    var ganador4 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0];
-    var ganador5 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1];
+    var ganador4 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0];
+    var ganador5 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1];
+    var ganador6 = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0];
+    var ganador7 = [0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0];
+    var ganador8 = [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0];
+    var ganador9 = [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0];
+    var ganador10 = [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    var ganador11 = [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
 
     //array con todos los cartones ganadores
-    var ganadores = [ganador1, ganador2, ganador3, ganador4, ganador5];
+    var ganadores = [ganador1, ganador2, ganador3, ganador4, ganador5, ganador6, ganador7, ganador8, ganador9, ganador10, ganador11];
 
     //bucle que recorre todas las combinaciones
     for (var i = 0; i < ganadores.length; i++) {
@@ -140,6 +157,13 @@ function sacarBola() {
         console.log(guardados);
 
         document.getElementById('numero').innerHTML = numero;
+
+        //lo pinto tb en el div para que se vayan viendo todos los numeros
+        var divLista = document.getElementById('listaNumeros');
+        var li = document.createElement('li');
+        var li_texto = document.createTextNode(numero);
+        li.appendChild(li_texto);
+        divLista.appendChild(li);
 
     });
 
