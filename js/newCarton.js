@@ -1,26 +1,43 @@
 /** Created by carmen on 30/03/16. */
 
+//todo hacer marcado de celdas automaticamente ¿?
+//todo añadir combinaciones ganadoras
+//todo poner boton para reiniciar
+//todo poner div con los numero que van saliendo
 /**
  * init
  */
 function init() {
     nuevoCarton();
     pintarNumeros();
-    manejadorBotones();
-
+    marcarNumeros();
+    sacarBola();
 
 }
 /**
- * funcion para añadir eventlistener a cada boton de las celdas
+ * funcion para ir marcando los numeros ganadores que tengo en mi carton
  */
-function manejadorBotones() {
+function marcarNumeros() {
     //capturo todos los botones
     var botones = document.getElementsByClassName('botonesBingo');
+
+    //array numero marcados iniciado a 24 posicion (0)
+    var marcados = new Array();
+
+    for (var i = 0; i < 25; i++) {
+        //la casilla 12 es el comodin, siempre esta a 1
+        if (i == 12) {
+            marcados[i] = 1;
+        } else {
+            marcados[i] = 0;
+        }
+    }
+
 
     //bucle para recorrer todos los botones
     for (var i = 0; i < botones.length; i++) {
 
-        //TODO que se vaya añadiendo la posicion seleccionada a un array, para luego comparar con los arrays de los cartones ganadores ¿?
+
         //le pongo el event listener, click -- desactivo boton
         botones[i].addEventListener('click', function () {
             //selecciono el id de la celda pulsada
@@ -29,6 +46,18 @@ function manejadorBotones() {
             var celda = document.getElementById(id);
             //desactivo el boton pulsada
             celda.setAttribute('disabled', 'disabled');
+            //lo cambio de color
+            celda.setAttribute('class', 'btn btn-success botonesBingo');
+
+            //variable con la posicion de la celda
+            var pos = id.slice(5);
+
+            //cambio a 1 la posicion de la celda en el array para comprobar cuando gana
+            marcados[pos] = 1;
+
+
+            //compruebo si el array es ganador
+            comprobarCarton(marcados);
         });
 
     }
@@ -36,18 +65,87 @@ function manejadorBotones() {
 
 }
 
+/**
+ * funcion que va a comprobar posicion a posicion si el array pasado es igual a los
+ * tengo almacendos como ganadores
+ * si son los dos arrays iguales, el usuario gana el juego
+ * @param array -- numeros marcados por el usuario
+ */
+function comprobarCarton(array) {
+
+    //carton ganador 1
+    var ganador1 = [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var ganador2 = [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var ganador3 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var ganador4 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0];
+    var ganador5 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1];
+
+
+    //array con todos los cartones ganadores
+    var ganadores = [ganador1, ganador2, ganador3, ganador4, ganador5];
+
+    //bucle que recorre todas las combinaciones
+    for (var i = 0; i < ganadores.length; i++) {
+
+        //alamceno cada array ganador
+        var ganador = ganadores[i];
+
+        //compruebo si son iguales (misma longitud, y cada par iguales en la misma posicion
+        var iguales = ganador.length == array.length && ganador.every(function (element, index) {
+                return element === array[index];
+            });
+
+
+        if (iguales) {
+            //imprimo un mensaje en el div
+            document.getElementById('ganador').innerHTML = "Has ganado";
+
+            //TODO cerrar la aplicacion
+        }
+
+
+    }
+
+
+}
+
+/**
+ * funcion que va a sacar los numeros ganadores de bingo y lo va a mostrar en pantalla (ultimo)
+ * @returns {Array} -- almancenados todos los numeros gandarores
+ */
 function sacarBola() {
 
     //capturo el boton de sacar bola
     var boton = document.getElementById('btnLanzar');
 
+    //array donde almaceno los numero que ya han salido
+    var guardados = new Array();
+
+    //inicio el numero aleatorio
+    var numero = 0;
+
     //evento click
     boton.addEventListener('click', function () {
 
         //saco un numero aleatorio 1-75
-        //TODO hacer como el usednums
+
+        //saco numero mientras no este duplicado
+        do {
+            //numero aleatorio del 1 - 75
+            numero = Math.floor(Math.random() * 75) + 1;
+
+        } while (comprobarNumeroDuplicado(numero, guardados))
+
+        guardados.push(numero);
+        console.log(guardados);
+
+        document.getElementById('numero').innerHTML = numero;
 
     });
+
+
+    //devuelvo el array completo de numeros guardados
+    return guardados;
 
 }
 
@@ -94,7 +192,6 @@ function nuevoCarton() {
             divFila1.appendChild(divFila2);
 
 
-            //TODO poner en el div correspondiente
             document.getElementById('panelBingo').appendChild(divFila1);
 
 
@@ -103,8 +200,17 @@ function nuevoCarton() {
 
     }
 
+    //la casilla 12 esta desactivada por defecto
+
+    var celda12 = document.getElementById('celda12');
+    //desactivo el boton pulsada
+    celda12.setAttribute('disabled', 'disabled');
+    //lo cambio de color
+    celda12.setAttribute('class', 'btn btn-warning botonesBingo');
+
 
 }
+
 /**
  * funcion para crear array con los numeros de cada carton
  * @returns {Array} -- con los numero en la pos corresp.
@@ -179,9 +285,9 @@ function crearArrayNumerosAleatorios() {
     }
 
 
-    //la posicion 12 (centro) se queda vacia
-    //TODO poner desactivado la pos 12 por defecto
+    //la posicion 12 (centro) se queda vacia (comodin)
     arrayNumeros[12] = "LIBRE";
+
 
     return arrayNumeros;
 
@@ -195,6 +301,7 @@ function devolverRandom() {
     return Math.floor(Math.random() * 15);
 
 }
+
 /**
  * funcion para pintar en cada celda el numero correspondiente del array
  */
