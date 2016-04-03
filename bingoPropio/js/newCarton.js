@@ -1,9 +1,9 @@
 /** Created by carmen on 30/03/16. */
 
 //todo hacer marcado de celdas automaticamente ¿?
-//todo añadir combinaciones ganadoras
-//todo poner boton para reiniciar
-//todo poner div con los numero que van saliendo
+//todo añadir mas combinaciones ganadoras
+//todo estructura codigo !!
+
 /**
  * init
  */
