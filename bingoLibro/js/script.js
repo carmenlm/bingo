@@ -148,7 +148,7 @@ function nuevoCarton() {
  */
 function otroCarton() {
     for (var i = 0; i < numeroUsados.length; i++) {
-        //se reseta el array de numeros usados
+        //se resetea el array de numeros usados
         numeroUsados[i] = false;
     }
     nuevoCarton();
