@@ -10,13 +10,14 @@ window.onload = initAll;
 /**
  * funcion que inicia cada celda, asignando un num aleatorio
  * @param celda -- posicion de una celda
+ * @param carton -- carton que tengo que pintar
  */
-function iniciarCelda(celda) {
+function iniciarCelda(celda, carton) {
     //variable de la id de cada celda (html)
-    var celdaActual = "celda" + celda;
+    var celdaActual = carton + "celda" + celda;
 
     //array con 24 posiciones para determinar cada columna
-    var columna = new Array(0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4);
+    var columna = new Array(0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4);
 
     //variable para calcular la el rango de cada columna
     var baseCol = columna[celda] * 15;
@@ -39,9 +40,6 @@ function iniciarCelda(celda) {
     //se inicia la clase css
     document.getElementById(celdaActual).className = "";
 
-    //cuando se pulsa se cambia de color
-    document.getElementById(celdaActual).onmousedown = cambiarColor;
-
 
 }
 /**
@@ -53,8 +51,10 @@ function getNuevoNumero() {
 }
 /**
  * funcion que calcula si hay una combinacion ganadora en el carton
+ * @params cartones -- numeros de cartones que tengo que comprobar
+ *
  */
-function comprobarGanador() {
+function comprobarGanador(cartones) {
 
     //inicia la opcion a -1
     //alamcena cual de las posibles opciones ganadoras ha pulsado el usuario
@@ -66,93 +66,120 @@ function comprobarGanador() {
     //array con valores que una posible linea ganadora
     var ganadores = new Array(31, 992, 15360, 507904, 541729, 557328, 1083458, 2162820, 4329736, 8519745, 8659472, 16252928);
 
-    for (var i = 0; i < 24; i++) {
-        var celdaActual = "celda" + i;
-        //si la celda actual tiene clase distinto de vacio
-        if (document.getElementById(celdaActual).className != "") {
-            //se pone la clase a elegido (redundante)
-            document.getElementById(celdaActual).className = "elegido";
+    //variable para cuando gane, se acabe la partida
+    var bandera = false;
 
-            //aritmetica bitwise ¿?  para poner el setceldas a un numero
-            //basado en cada estado del carton
-            //la barra hace el bitwise "OR" de 2 valores
-            //setceldas y y el valor de 2 elevado a i
-            setCeldas = setCeldas | Math.pow(2, i);
-        }
+    for (var c = 0; c < cartones; c++) {
 
-    }
-    for (var i = 0; i < ganadores.length; i++) {
-
-        //comprueba que cada posicion de ganadores y set celdas sea igual a la posicion de ganadores ¿?
-        if ((ganadores[i] & setCeldas) == ganadores[i]) {
-
-            //si se cumple la opcion ganadora se cambia
-            //a la posicion del array ganadores que sea
-            opcionGanadora = i;
-        }
-    }
-
-    //si la opcionganadora es mayor que -1 (default)
-    if (opcionGanadora > -1) {
-        //bucle por todas las celdas
         for (var i = 0; i < 24; i++) {
-            //si la opcionganadora y la potencia de 2 elevado a 1
-            if (ganadores[opcionGanadora] & Math.pow(2, i)) {
-                //id de la celda
-                celdaActual = "celda" + i;
-                //se cambia el color css de las celdas ganadoras
-                document.getElementById(celdaActual).className = "ganador";
+
+            var celdaActual = c + "celda" + i;
+
+            //si la celda actual tiene clase distinto de vacio
+            if (document.getElementById(celdaActual).className != "") {
+                //se pone la clase a elegido (redundante)
+                document.getElementById(celdaActual).className = "elegido";
+
+                //aritmetica bitwise ¿?  para poner el setceldas a un numero
+                //basado en cada estado del carton
+                //la barra hace el bitwise "OR" de 2 valores
+                //setceldas y y el valor de 2 elevado a i
+                setCeldas = setCeldas | Math.pow(2, i);
             }
 
         }
+        for (var i = 0; i < ganadores.length; i++) {
+
+            //comprueba que cada posicion de ganadores y set celdas sea igual a la posicion de ganadores
+            if ((ganadores[i] & setCeldas) == ganadores[i]) {
+
+                //si se cumple la opcion ganadora se cambia
+                //a la posicion del array ganadores que sea
+                opcionGanadora = i;
+            }
+
+            //si la opcionganadora es mayor que -1 (default)
+            if (opcionGanadora > -1) {
+                //bucle por todas las celdas
+                for (var i = 0; i < 24; i++) {
+                    //si la opcionganadora y la potencia de 2 elevado a 1
+                    if (ganadores[opcionGanadora] & Math.pow(2, i)) {
+                        //id de la celda
+                        celdaActual = c + "celda" + i;
+
+                        //se cambia el color css de las celdas ganadoras
+                        document.getElementById(celdaActual).className = "ganador";
+                        bandera = true;
+                    }
+
+                }
+            }
+
+
+        }
+
+
     }
+
+
+    //cuando gane deshabilito el boto de sacar bola, asi no puede sacar más bola
+    if (bandera) {
+        document.getElementById('sacar').disabled = true;
+    }
+
 
 }
 /**
- * funcion que cambia el color de una celda cuando es pulsada
- * @param evt --celda pulsada (evento)
+ * funcion que cambia el color de una celda cuando sale un numero aleatorio
+ * @param cartones --numero de cartones que tengo que comprobar para saber si esta la bola
  */
-function cambiarColor(evt) {
-    //distingue entre ie y mozilla/chrome
+function cambiarColor(cartones) {
+    //variable para almacenar el numero aleatorio
+    var bola;
 
-    if (evt) {
-        var celda = evt.target;
-    } else {
-        var celda = window.event.srcElement;
+    //saco un numero aleatorio, mientras que ese numero ya este en el array de num usados
+    do {
+
+        //numero aleatorio
+        bola = Math.floor(Math.random() * 75) + 1;
+
+    } while (numeroUsados[bola]);
+
+    numeroUsados[bola] = true;
+
+
+    //recorremos los cartones que tenemos para saber si la bola esta o no
+    for (var i = 0; i < cartones; i++) {
+        //recorro las celdas
+        for (var j = 0; j < 24; j++) {
+            //variable con la id de la celda
+            var celda = document.getElementById(i + 'celda' + j);
+            //si la id celda es igual a la bola sacada
+            if (celda.innerHTML == bola) {
+                //cambio el color
+                celda.className = "elegido";
+            }
+
+        }
+
     }
 
-    //si la celda vacia
-    if (celda.className == "") {
-        //se cambia a .elegido
-        celda.className = "elegido";
+    //pinto los numero que vamos sacando
 
-    }
-    //sino se cambia a vacio
-    else {
-        celda.className = "";
-    }
-    comprobarGanador();
+    document.getElementById('numeroAleatorio').innerHTML += " " + bola + " ";
+
+    //compruebo cada vez que pinto una celda si hay un ganador
+    comprobarGanador(cartones);
 }
 /**
- * funcion para iniciar el nuevoCarton
- */
-function nuevoCarton() {
-    for (var i = 0; i < 24; i++) {
-        iniciarCelda(i);
-    }
-}
-
-/**
- * funcion para recargar el carton
- * @returns {boolean}
+ * funcion para resetear los numeros usados en el carton
  */
 function otroCarton() {
     for (var i = 0; i < numeroUsados.length; i++) {
         //se resetea el array de numeros usados
         numeroUsados[i] = false;
     }
-    nuevoCarton();
-    return false;
+
 }
 /**
  * funcion init
@@ -161,8 +188,32 @@ function initAll() {
 
     //si existe el objeto
     if (document.getElementById) {
-        document.getElementById('reload').onclick = otroCarton;
-        nuevoCarton();
+
+
+        //al hacer click en el boton jugar
+        document.getElementById('btnJugar').addEventListener('click', function () {
+
+            //variable con los cartones que tengo
+            var nCartones = document.getElementById('cartones').value;
+
+            //reseteo los div
+            document.getElementById('contenido').innerHTML ="";
+            document.getElementById('numeroAleatorio').innerHTML ="";
+
+            //habilito el boton de sacar bola
+            document.getElementById('sacar').disabled = false;
+
+            //pinto los cartones
+            agregarCarton(nCartones);
+
+            //cuando hago click en sacar bola
+            document.getElementById('sacar').addEventListener('click', function () {
+                //cambio el color de la celda que coincida con el numero
+                cambiarColor(nCartones);
+
+            })
+
+        })
 
     } else {
         alert("Lo siento, el navegador no soporta este script")
@@ -171,9 +222,15 @@ function initAll() {
 
 }
 
-function pintarCarton() {
+/**
+ * funcion que va a devolver la cadena html con el carton
+ * @param id --numero del carton
+ * @returns {string} --cadena para incrustar en el html
+ */
+function pintarCarton(id) {
 
-    var cadenaHtml = '<table>' +
+    var cadenaHtml = '<div id="carton' + id + '">' +
+        '<table>' +
         '<tr>' +
         '<th>B</th>' +
         '<th>I</th>' +
@@ -182,43 +239,76 @@ function pintarCarton() {
         '<th>O</th>' +
         '</tr>' +
         '<tr>' +
-        '<td id="celda0"></td>' +
-        '<td id="celda5"></td>' +
-        '<tdid="celda10"></td>' +
-        '<td id="celda14"></td>' +
-        '<td id="celda19"></td>' +
+        '<td id="' + id + 'celda0"></td>' +
+        '<td id="' + id + 'celda5"></td>' +
+        '<td id="' + id + 'celda10"></td>' +
+        '<td id="' + id + 'celda14"></td>' +
+        '<td id="' + id + 'celda19"></td>' +
         '</tr>' +
         '<tr>' +
-        '<td id="celda1"></td>' +
-        '<td id="celda6"></td>' +
-        '<td id="celda11"></td>' +
-        '<tdid="celda15"></td>' +
-        '<td id="celda20"></td>' +
+        '<td id="' + id + 'celda1"></td>' +
+        '<td id="' + id + 'celda6"></td>' +
+        '<td id="' + id + 'celda11"></td>' +
+        '<td id="' + id + 'celda15"></td>' +
+        '<td id="' + id + 'celda20"></td>' +
         '</tr>' +
         '<tr>' +
-        '<td id="celda2"></td>' +
-        '<td id="celda7"></td>	' +
+        '<td id="' + id + 'celda2"></td>' +
+        '<td id="' + id + 'celda7"></td>	' +
         '<td id="libre">LIBRE</td>	' +
-        '<td id="celda16"></td>	' +
-        '<tdid="celda21"></td>' +
+        '<td id="' + id + 'celda16"></td>	' +
+        '<td id="' + id + 'celda21"></td>' +
         '</tr>' +
         '<tr>' +
-        '<td id="celda3"></td>	' +
-        '<td id="celda8"></td>	' +
-        '<td id="celda12"></td>	' +
-        '<td id="celda17"></td>	' +
-        '<td id="celda22"></td>	' +
+        '<td id="' + id + 'celda3"></td>	' +
+        '<td id="' + id + 'celda8"></td>	' +
+        '<td id="' + id + 'celda12"></td>	' +
+        '<td id="' + id + 'celda17"></td>	' +
+        '<td id="' + id + 'celda22"></td>	' +
         '</tr>	' +
         '<tr>	' +
-        '<td id="celda4"></td>' +
-        '<td id="celda9"></td>	' +
-        '<td id="celda13"></td>	' +
-        '<td id="celda18"></td>	' +
-        '<td id="celda23"></td>	' +
+        '<td id="' + id + 'celda4"></td>' +
+        '<td id="' + id + 'celda9"></td>	' +
+        '<td id="' + id + 'celda13"></td>	' +
+        '<td id="' + id + 'celda18"></td>	' +
+        '<td id="' + id + 'celda23"></td>	' +
         '</tr>	' +
-        '</table>';
+        '</table>' +
+        '<div>';
+
+    return cadenaHtml;
 
 
 }
+/**
+ * funcion que va a `pintar los cartones en el html
+ * @param cartones -- numero de cartones que tengo que pintar
+ */
+function agregarCarton(cartones) {
+
+    //string para la cadena html del carton
+    var contenido;
+    for (var i = 0; i < cartones; i++) {
+
+        //llamo a la funcion de pintar
+        contenido = pintarCarton(i);
+        //la cadena la incrusto en el html
+        document.getElementById('contenido').innerHTML += contenido;
+
+        //recorro las celdas
+        for (var j = 0; j < 24; j++) {
+            //pinto los numeros aleatorios en cada celda
+            iniciarCelda(j, i);
+        }
+        //reseteo los numeros usados para crear un nuevo carton
+        otroCarton();
+
+    }
+    //al final reseteo los numeros usados para poder ir sacandolos
+    otroCarton();
+
+
+}
+
 
 

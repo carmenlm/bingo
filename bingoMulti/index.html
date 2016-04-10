@@ -8,51 +8,27 @@
 </head>
 <body>
 <h1>Crea un cartón de Bingo</h1>
-<table>
-	<tr>
-		<th>B</th>
-		<th>I</th>
-		<th>N</th>
-		<th>G</th>
-		<th>O</th>
-	</tr>
-	<tr>
-		<td id="celda0"></td>
-		<td id="celda5"></td>
-		<td id="celda10"></td>
-		<td id="celda14"></td>
-		<td id="celda19"></td>
-	</tr>
-	<tr>
-		<td id="celda1"></td>
-		<td id="celda6"></td>
-		<td id="celda11"></td>
-		<td id="celda15"></td>
-		<td id="celda20"></td>
-	</tr>
-	<tr>
-		<td id="celda2"></td>
-		<td id="celda7"></td>
-		<td id="libre">LIBRE</td>
-		<td id="celda16"></td>
-		<td id="celda21"></td>
-	</tr>
-	<tr>
-		<td id="celda3"></td>
-		<td id="celda8"></td>
-		<td id="celda12"></td>
-		<td id="celda17"></td>
-		<td id="celda22"></td>
-	</tr>
-	<tr>
-		<td id="celda4"></td>
-		<td id="celda9"></td>
-		<td id="celda13"></td>
-		<td id="celda18"></td>
-		<td id="celda23"></td>
-	</tr>
-</table>
-<p><a href="#" id="reload">Crear nuevo cartón</a></p>
+<div>
+
+	<label for="cartones">¿Cuántos cartones quieres?</label>
+	<input type="number" name="cartones" id="cartones" min="1" max="10">
+	<input type="button" value="Jugar" id="btnJugar" name="btnJugar">
+
+</div>
+
+<div id="contenido">
+
+</div>
+
+<div id="bola">
+	<input type="button" value="Sacar Bola" id="sacar" name="sacar">
+	<div id="numeroAleatorio">
+	
+	</div>
+</div>
+
+
+<!--<p><a href="#" id="reload">Crear nuevo cartón</a></p>-->
 
 
 </body>
