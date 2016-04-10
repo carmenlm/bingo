@@ -27,8 +27,10 @@ function iniciarCelda(celda, carton) {
 
     //repetir el proceso mientras que el numero este repetido en numerosusados
     do {
+
         //sumando el rango calculado al numero aleatorio
         nuevoNum = baseCol + getNuevoNumero() + 1;
+
     } while (numeroUsados[nuevoNum]);
 
     //la posicion del array de ese numero se pone a true
@@ -80,10 +82,8 @@ function comprobarGanador(cartones) {
                 //se pone la clase a elegido (redundante)
                 document.getElementById(celdaActual).className = "elegido";
 
-                //aritmetica bitwise ¿?  para poner el setceldas a un numero
-                //basado en cada estado del carton
-                //la barra hace el bitwise "OR" de 2 valores
-                //setceldas y y el valor de 2 elevado a i
+                //aritmetica bitwise para poner el setceldas a un numero basado en cada estado del carton
+                //la barra hace el bitwise "OR" de 2 valores setceldas y el valor de 2 elevado a i
                 setCeldas = setCeldas | Math.pow(2, i);
             }
 
@@ -93,8 +93,7 @@ function comprobarGanador(cartones) {
             //comprueba que cada posicion de ganadores y set celdas sea igual a la posicion de ganadores
             if ((ganadores[i] & setCeldas) == ganadores[i]) {
 
-                //si se cumple la opcion ganadora se cambia
-                //a la posicion del array ganadores que sea
+                //si se cumple la opcion ganadora se cambia a la posicion del array ganadores que sea
                 opcionGanadora = i;
             }
 
@@ -111,22 +110,15 @@ function comprobarGanador(cartones) {
                         document.getElementById(celdaActual).className = "ganador";
                         bandera = true;
                     }
-
                 }
             }
-
-
         }
-
-
     }
-
 
     //cuando gane deshabilito el boto de sacar bola, asi no puede sacar más bola
     if (bandera) {
         document.getElementById('sacar').disabled = true;
     }
-
 
 }
 /**
@@ -134,6 +126,7 @@ function comprobarGanador(cartones) {
  * @param cartones --numero de cartones que tengo que comprobar para saber si esta la bola
  */
 function cambiarColor(cartones) {
+
     //variable para almacenar el numero aleatorio
     var bola;
 
@@ -145,6 +138,7 @@ function cambiarColor(cartones) {
 
     } while (numeroUsados[bola]);
 
+    //se cambia el array de numeros usados
     numeroUsados[bola] = true;
 
 
@@ -197,8 +191,8 @@ function initAll() {
             var nCartones = document.getElementById('cartones').value;
 
             //reseteo los div
-            document.getElementById('contenido').innerHTML ="";
-            document.getElementById('numeroAleatorio').innerHTML ="";
+            document.getElementById('contenido').innerHTML = "";
+            document.getElementById('numeroAleatorio').innerHTML = "";
 
             //habilito el boton de sacar bola
             document.getElementById('sacar').disabled = false;
@@ -229,7 +223,9 @@ function initAll() {
  */
 function pintarCarton(id) {
 
+
     var cadenaHtml = '<div id="carton' + id + '">' +
+        '<h2>Carton ' + id + '</h2>' +
         '<table>' +
         '<tr>' +
         '<th>B</th>' +
