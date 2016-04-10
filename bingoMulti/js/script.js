@@ -225,7 +225,7 @@ function pintarCarton(id) {
 
 
     var cadenaHtml = '<div id="carton' + id + '">' +
-        '<h2>Carton ' + id + '</h2>' +
+        '<h2>Cartón ' + id + '</h2>' +
         '<table>' +
         '<tr>' +
         '<th>B</th>' +
