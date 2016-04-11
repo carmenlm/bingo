@@ -147,13 +147,13 @@ var bingo = {
             document.getElementById('contenido').innerHTML += contenido;
 
 
-            /*var claseCabecera = i + "cabecera";
-             var celdas = document.getElementsByClassName(claseCabecera);
+            var claseCabecera = i + "cabecera";
+            var celdas = document.getElementsByClassName(claseCabecera);
 
-             for (var j = 0; j < celdas.length; j++) {
-             celdas[j].style.backgroundColor = bingo.colores[i];
-             }
-             */
+            for (var j = 0; j < celdas.length; j++) {
+                celdas[j].style.backgroundColor = bingo.colores[i];
+            }
+
 
             //recorro las celdas
             for (var j = 0; j < 24; j++) {
@@ -299,6 +299,9 @@ var bingo = {
                 //variable con los cartones que tengo
                 bingo.numeroCartones = document.getElementById('cartones').value;
 
+                //deshabilito el boton de jugar
+                document.getElementById('btnJugar').disabled = true;
+
 
                 //reseteo los div
                 document.getElementById('contenido').innerHTML = "";
@@ -318,6 +321,15 @@ var bingo = {
 
                 });
 
+            });
+
+            document.getElementById('btnReset').addEventListener('click', function () {
+                location.reload();
+                //deshabilito el boton de sacar bola jugar
+                document.getElementById('sacar').disabled = true;
+
+                //habilito el boton de jugar
+                document.getElementById('btnJugar').disabled = false;
             });
 
         } else {
