@@ -2,6 +2,8 @@
  * Created by Carmen on 03/04/2016.
  */
 
+ //TODO poner array con colores para cada carton
+
 //array donde se almacenan los numero que ya han salido
 var numeroUsados = new Array(76);
 //init
