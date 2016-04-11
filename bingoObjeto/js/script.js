@@ -78,6 +78,7 @@ function comprobarGanador(cartones) {
         for (var i = 0; i < 24; i++) {
 
             var celdaActual = c + "celda" + i;
+            console.log(celdaActual);
 
             //si la celda actual tiene clase distinto de vacio
             if (document.getElementById(celdaActual).className != "") {
@@ -107,12 +108,14 @@ function comprobarGanador(cartones) {
                     if (ganadores[opcionGanadora] & Math.pow(2, i)) {
                         //id de la celda
                         celdaActual = c + "celda" + i;
+                        console.log(celdaActual);
 
                         //se cambia el color css de las celdas ganadoras
                         document.getElementById(celdaActual).className = "ganador";
-                        bandera = true;
+                       
                     }
                 }
+                bandera = true;
             }
         }
     }

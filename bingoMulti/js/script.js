@@ -77,8 +77,6 @@ function comprobarGanador(cartones) {
     for (var i = 0; i < 24; i++) {
 
         var celdaActual = cartones + "celda" + i;
-        console.log(celdaActual);
-
 
         //si la celda actual tiene clase distinto de vacio
         if (document.getElementById(celdaActual).className != "") {

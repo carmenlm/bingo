@@ -148,12 +148,12 @@ var bingo = {
 
 
             /*var claseCabecera = i + "cabecera";
-            var celdas = document.getElementsByClassName(claseCabecera);
+             var celdas = document.getElementsByClassName(claseCabecera);
 
-            for (var j = 0; j < celdas.length; j++) {
-                celdas[j].style.backgroundColor = bingo.colores[i];
-            }
-*/
+             for (var j = 0; j < celdas.length; j++) {
+             celdas[j].style.backgroundColor = bingo.colores[i];
+             }
+             */
 
             //recorro las celdas
             for (var j = 0; j < 24; j++) {
@@ -171,7 +171,7 @@ var bingo = {
     /**
      * funcion que cambia el color de una celda cuando sale un numero aleatorio
      */
-    comprobarGanador: function () {
+    comprobarGanador: function (carton) {
 
         //TODO repasar el ganador
 
@@ -189,45 +189,45 @@ var bingo = {
         //variable para cuando gane, se acabe la partida
         var bandera = false;
 
-        for (var c = 0; c < bingo.numeroCartones; c++) {
 
-            for (var i = 0; i < 24; i++) {
+        for (var i = 0; i < 24; i++) {
 
-                var celdaActual = c + "celda" + i;
+            var celdaActual = carton + "celda" + i;
 
-                //si la celda actual tiene clase distinto de vacio
-                if (document.getElementById(celdaActual).className != "") {
-                    //se pone la clase a elegido (redundante)
-                    document.getElementById(celdaActual).className = "elegido";
 
-                    //aritmetica bitwise para poner el setceldas a un numero basado en cada estado del carton
-                    //la barra hace el bitwise "OR" de 2 valores setceldas y el valor de 2 elevado a i
-                    setCeldas = setCeldas | Math.pow(2, i);
-                }
+            //si la celda actual tiene clase distinto de vacio
+            if (document.getElementById(celdaActual).className != "") {
+                //se pone la clase a elegido (redundante)
+                document.getElementById(celdaActual).className = "elegido";
 
+                //aritmetica bitwise para poner el setceldas a un numero basado en cada estado del carton
+                //la barra hace el bitwise "OR" de 2 valores setceldas y el valor de 2 elevado a i
+                setCeldas = setCeldas | Math.pow(2, i);
             }
-            for (var i = 0; i < ganadores.length; i++) {
 
-                //comprueba que cada posicion de ganadores y set celdas sea igual a la posicion de ganadores
-                if ((ganadores[i] & setCeldas) == ganadores[i]) {
+        }
+        for (var i = 0; i < ganadores.length; i++) {
 
-                    //si se cumple la opcion ganadora se cambia a la posicion del array ganadores que sea
-                    opcionGanadora = i;
-                }
+            //comprueba que cada posicion de ganadores y set celdas sea igual a la posicion de ganadores
+            if ((ganadores[i] & setCeldas) == ganadores[i]) {
 
-                //si la opcionganadora es mayor que -1 (default)
-                if (opcionGanadora > -1) {
-                    //bucle por todas las celdas
-                    for (var i = 0; i < 24; i++) {
-                        //si la opcionganadora y la potencia de 2 elevado a 1
-                        if (ganadores[opcionGanadora] & Math.pow(2, i)) {
-                            //id de la celda
-                            celdaActual = c + "celda" + i;
+                //si se cumple la opcion ganadora se cambia a la posicion del array ganadores que sea
+                opcionGanadora = i;
+            }
 
-                            //se cambia el color css de las celdas ganadoras
-                            document.getElementById(celdaActual).className = "ganador";
-                            bandera = true;
-                        }
+            //si la opcionganadora es mayor que -1 (default)
+            if (opcionGanadora > -1) {
+
+                //bucle por todas las celdas
+                for (var i = 0; i < 24; i++) {
+                    //si la opcionganadora y la potencia de 2 elevado a 1
+                    if (ganadores[opcionGanadora] & Math.pow(2, i)) {
+                        //id de la celda
+                        celdaActual = carton + "celda" + i;
+                        console.log(celdaActual);
+                        //se cambia el color css de las celdas ganadoras
+                        document.getElementById(celdaActual).className = "ganador";
+                        bandera = true;
                     }
                 }
             }
@@ -273,13 +273,15 @@ var bingo = {
 
             }
 
+
+            //compruebo cada vez que pinto una celda si hay un ganador
+            bingo.comprobarGanador(i);
+
         }
 
         //pinto los numero que vamos sacando
         document.getElementById('numeroAleatorio').innerHTML += " " + bola + " ";
 
-        //compruebo cada vez que pinto una celda si hay un ganador
-        bingo.comprobarGanador();
     },
     /**
      * funcion init

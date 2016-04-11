@@ -34,7 +34,7 @@ th, td {
 }
 
 .ganador {
-    background-color: #66ff66;
+    background-color: #66ff66 !important;
 }
 
 #main {
