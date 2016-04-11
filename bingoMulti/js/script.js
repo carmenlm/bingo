@@ -2,7 +2,7 @@
  * Created by Carmen on 03/04/2016.
  */
 
- //TODO poner array con colores para cada carton
+//TODO poner array con colores para cada carton
 
 //array donde se almacenan los numero que ya han salido
 var numeroUsados = new Array(76);
@@ -60,6 +60,7 @@ function getNuevoNumero() {
  */
 function comprobarGanador(cartones) {
 
+
     //inicia la opcion a -1
     //alamcena cual de las posibles opciones ganadoras ha pulsado el usuario
     var opcionGanadora = -1;
@@ -73,51 +74,50 @@ function comprobarGanador(cartones) {
     //variable para cuando gane, se acabe la partida
     var bandera = false;
 
-    for (var c = 0; c < cartones; c++) {
+    for (var i = 0; i < 24; i++) {
 
-        for (var i = 0; i < 24; i++) {
+        var celdaActual = cartones + "celda" + i;
+        console.log(celdaActual);
 
-            var celdaActual = c + "celda" + i;
 
-            //si la celda actual tiene clase distinto de vacio
-            if (document.getElementById(celdaActual).className != "") {
-                //se pone la clase a elegido (redundante)
-                document.getElementById(celdaActual).className = "elegido";
+        //si la celda actual tiene clase distinto de vacio
+        if (document.getElementById(celdaActual).className != "") {
+            //se pone la clase a elegido (redundante)
+            document.getElementById(celdaActual).className = "elegido";
 
-                //aritmetica bitwise para poner el setceldas a un numero basado en cada estado del carton
-                //la barra hace el bitwise "OR" de 2 valores setceldas y el valor de 2 elevado a i
-                setCeldas = setCeldas | Math.pow(2, i);
-            }
-
+            //aritmetica bitwise para poner el setceldas a un numero basado en cada estado del carton
+            //la barra hace el bitwise "OR" de 2 valores setceldas y el valor de 2 elevado a i
+            setCeldas = setCeldas | Math.pow(2, i);
         }
-        for (var i = 0; i < ganadores.length; i++) {
 
-            //comprueba que cada posicion de ganadores y set celdas sea igual a la posicion de ganadores
-            if ((ganadores[i] & setCeldas) == ganadores[i]) {
+    }
+    for (var i = 0; i < ganadores.length; i++) {
 
-                //si se cumple la opcion ganadora se cambia a la posicion del array ganadores que sea
-                opcionGanadora = i;
-            }
+        //comprueba que cada posicion de ganadores y set celdas sea igual a la posicion de ganadores
+        if ((ganadores[i] & setCeldas) == ganadores[i]) {
 
-            //si la opcionganadora es mayor que -1 (default)
-            if (opcionGanadora > -1) {
-                //bucle por todas las celdas
-                for (var i = 0; i < 24; i++) {
-                    //si la opcionganadora y la potencia de 2 elevado a 1
-                    if (ganadores[opcionGanadora] & Math.pow(2, i)) {
-                        //id de la celda
-                        celdaActual = c + "celda" + i;
+            //si se cumple la opcion ganadora se cambia a la posicion del array ganadores que sea
+            opcionGanadora = i;
+        }
 
-                        //se cambia el color css de las celdas ganadoras
-                        document.getElementById(celdaActual).className = "ganador";
-                        bandera = true;
-                    }
+        //si la opcionganadora es mayor que -1 (default)
+        if (opcionGanadora > -1) {
+            //bucle por todas las celdas
+            for (var i = 0; i < 24; i++) {
+                //si la opcionganadora y la potencia de 2 elevado a 1
+                if (ganadores[opcionGanadora] & Math.pow(2, i)) {
+                    //id de la celda
+                    celdaActual = cartones + "celda" + i;
+                    //se cambia el color css de las celdas ganadoras
+                    document.getElementById(celdaActual).className = "ganador";
+                    bandera = true;
                 }
             }
         }
     }
 
-    //cuando gane deshabilito el boto de sacar bola, asi no puede sacar más bola
+
+//cuando gane deshabilito el boto de sacar bola, asi no puede sacar más bola
     if (bandera) {
         document.getElementById('sacar').disabled = true;
     }
@@ -158,14 +158,15 @@ function cambiarColor(cartones) {
 
         }
 
+        //compruebo cada vez que pinto una celda si hay un ganador
+        comprobarGanador(i);
+
+
     }
-
     //pinto los numero que vamos sacando
-
     document.getElementById('numeroAleatorio').innerHTML += " " + bola + " ";
 
-    //compruebo cada vez que pinto una celda si hay un ganador
-    comprobarGanador(cartones);
+
 }
 /**
  * funcion para resetear los numeros usados en el carton
